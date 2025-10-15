@@ -32,7 +32,7 @@ let ArticlesService = class ArticlesService {
         return this.articlesRepository.save(article);
     }
     async findAll(searchDto) {
-        const { query, articleNumber, tag, page = 1, limit = 10 } = searchDto;
+        const { query, articleNumber, tag, page = 1, limit = 10, sortBy = 'articleNumber', sortOrder = 'asc' } = searchDto;
         const skip = (page - 1) * limit;
         const queryBuilder = this.articlesRepository
             .createQueryBuilder('article')
@@ -50,8 +50,15 @@ let ArticlesService = class ArticlesService {
         if (tag) {
             queryBuilder.andWhere('tags.name = :tag', { tag });
         }
+        let orderColumn = 'article.articleNumber';
+        if (sortBy === 'title') {
+            orderColumn = 'article.title';
+        }
+        else if (sortBy === 'createdAt') {
+            orderColumn = 'article.createdAt';
+        }
         const [articles, total] = await queryBuilder
-            .orderBy('article.articleNumber', 'ASC')
+            .orderBy(orderColumn, sortOrder.toUpperCase())
             .skip(skip)
             .take(limit)
             .getManyAndCount();

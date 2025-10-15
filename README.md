@@ -1,17 +1,19 @@
-# CGI Reader - Code Général des Impôts Reader
+# CGI Reader - Code Général des Impôts Marocain
 
-Une application web moderne pour consulter le Code Général des Impôts français avec une interface inspirée de Medium.com.
+Une application web moderne pour consulter le Code Général des Impôts marocain avec une interface inspirée de Medium.com.
 
 ## 🚀 Fonctionnalités
 
-- **Recherche avancée** : Recherchez par numéro d'article ou mots-clés
+- **Recherche en temps réel** : Recherchez par numéro d'article ou mots-clés avec suggestions instantanées
 - **Interface moderne** : Design inspiré de Medium.com avec une expérience utilisateur fluide
+- **Pages d'articles dédiées** : Navigation vers des pages séparées pour une meilleure expérience de lecture
 - **Export PDF** : Exportez les articles en PDF avec un formatage professionnel
-- **Navigation intuitive** : Références cliquables et navigation fluide
+- **Tri et pagination** : Triez les articles et naviguez facilement avec la pagination
+- **Filtrage par tags** : Filtrez les articles par catégories fiscales (IS, TVA, IR, etc.)
+- **Références interactives** : Modal pour afficher les références des articles
 - **Design responsive** : Optimisé pour tous les appareils
 - **API complète** : Backend NestJS avec endpoints REST
-- **Base de données** : SQLite avec support des références et tags
-- **Gestion des articles** : CRUD complet pour les articles
+- **Base de données** : SQLite avec 474 articles du CGI marocain 2025
 
 ## 🛠️ Technologies
 

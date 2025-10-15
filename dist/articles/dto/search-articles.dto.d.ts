@@ -4,4 +4,6 @@ export declare class SearchArticlesDto {
     tag?: string;
     page?: number;
     limit?: number;
+    sortBy?: string;
+    sortOrder?: string;
 }

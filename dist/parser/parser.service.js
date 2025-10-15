@@ -58,19 +58,34 @@ let ParserService = class ParserService {
         let inArticle = false;
         let currentSection = '';
         let currentChapter = '';
+        let currentBook = '';
+        let currentTitle = '';
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
-            const sectionMatch = line.match(/^(Section|Chapitre|Titre|Livre)\s+(.+)/i);
-            if (sectionMatch) {
-                if (sectionMatch[1].toLowerCase() === 'section') {
-                    currentSection = sectionMatch[2];
-                }
-                else if (sectionMatch[1].toLowerCase() === 'chapitre') {
-                    currentChapter = sectionMatch[2];
-                }
+            if (!line || line.includes('C:\\Users\\') || line.includes('.jpg') || line === '2025') {
                 continue;
             }
-            const articleMatch = line.match(/^Article\s+(\d+(?:\s+(?:bis|ter|quater|quinquies|sexies|septies|octies|nonies|decies))?)/i);
+            const bookMatch = line.match(/^LIVRE\s+([IVX]+)\s*[-–]\s*(.+)/i);
+            if (bookMatch) {
+                currentBook = bookMatch[2];
+                continue;
+            }
+            const titleMatch = line.match(/^TITRE\s+([IVX]+)\s*[-–]\s*(.+)/i);
+            if (titleMatch) {
+                currentTitle = titleMatch[2];
+                continue;
+            }
+            const chapterMatch = line.match(/^CHAPITRE\s+([IVX]+)\s*[-–]\s*(.+)/i);
+            if (chapterMatch) {
+                currentChapter = chapterMatch[2];
+                continue;
+            }
+            const sectionMatch = line.match(/^SECTION\s+([IVX]+)\s*[-–]\s*(.+)/i);
+            if (sectionMatch) {
+                currentSection = sectionMatch[2];
+                continue;
+            }
+            const articleMatch = line.match(/^Article\s+(\d+(?:[a-z]+)?)/i);
             if (articleMatch) {
                 if (currentArticle && currentContent.length > 0) {
                     currentArticle.content = currentContent.join('\n').trim();
@@ -92,12 +107,12 @@ let ParserService = class ParserService {
                 continue;
             }
             if (inArticle && currentArticle) {
-                const modMatch = line.match(/(?:modifié|ajouté|abrogé|supprimé)/i);
+                const modMatch = line.match(/(?:modifié|ajouté|abrogé|supprimé|abrogé|réformé)/i);
                 if (modMatch) {
                     currentArticle.modificationReason = line;
                     currentArticle.lastModified = new Date();
                 }
-                if (line.length > 0) {
+                if (line.length > 0 && !line.match(/^[IVX]+\./)) {
                     currentContent.push(line);
                 }
             }

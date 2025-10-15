@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber, Min } from 'class-validator';
+import { IsString, IsOptional, IsNumber, Min, IsIn } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class SearchArticlesDto {
@@ -25,4 +25,14 @@ export class SearchArticlesDto {
   @Type(() => Number)
   @Min(1)
   limit?: number = 10;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['articleNumber', 'title', 'createdAt'])
+  sortBy?: string = 'articleNumber';
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['asc', 'desc'])
+  sortOrder?: string = 'asc';
 }

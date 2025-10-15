@@ -16,6 +16,8 @@ class SearchArticlesDto {
     constructor() {
         this.page = 1;
         this.limit = 10;
+        this.sortBy = 'articleNumber';
+        this.sortOrder = 'asc';
     }
 }
 exports.SearchArticlesDto = SearchArticlesDto;
@@ -48,4 +50,16 @@ __decorate([
     (0, class_validator_1.Min)(1),
     __metadata("design:type", Number)
 ], SearchArticlesDto.prototype, "limit", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsIn)(['articleNumber', 'title', 'createdAt']),
+    __metadata("design:type", String)
+], SearchArticlesDto.prototype, "sortBy", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsIn)(['asc', 'desc']),
+    __metadata("design:type", String)
+], SearchArticlesDto.prototype, "sortOrder", void 0);
 //# sourceMappingURL=search-articles.dto.js.map
