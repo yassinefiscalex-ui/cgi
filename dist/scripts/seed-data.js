@@ -9,16 +9,24 @@ async function seedData() {
     const parserService = app.get(parser_service_1.ParserService);
     try {
         console.log('Starting data seeding...');
-        let cgiFilePath = path.join(process.cwd(), 'cgi-2025-fr-brut.txt');
+        const jsonPath = path.join(process.cwd(), 'cgi_2025.json');
         try {
-            await parserService.parseCgiFile(cgiFilePath);
-            console.log('Successfully parsed cgi-2025-fr-brut.txt');
+            await parserService.parseCgiJsonFile(jsonPath);
+            console.log('Successfully parsed cgi_2025.json');
         }
-        catch (error) {
-            console.log('cgi-2025-fr-brut.txt not found, trying CGI-2025-FR.txt...');
-            cgiFilePath = path.join(process.cwd(), 'CGI-2025-FR.txt');
-            await parserService.parseCgiFile(cgiFilePath);
-            console.log('Successfully parsed CGI-2025-FR.txt');
+        catch (jsonError) {
+            console.log('cgi_2025.json not found or invalid, trying text sources...');
+            let cgiFilePath = path.join(process.cwd(), 'cgi-2025-fr-brut.txt');
+            try {
+                await parserService.parseCgiFile(cgiFilePath);
+                console.log('Successfully parsed cgi-2025-fr-brut.txt');
+            }
+            catch (error) {
+                console.log('cgi-2025-fr-brut.txt not found, trying CGI-2025-FR.txt...');
+                cgiFilePath = path.join(process.cwd(), 'CGI-2025-FR.txt');
+                await parserService.parseCgiFile(cgiFilePath);
+                console.log('Successfully parsed CGI-2025-FR.txt');
+            }
         }
         console.log('Data seeding completed successfully!');
     }

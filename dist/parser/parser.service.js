@@ -24,6 +24,62 @@ let ParserService = class ParserService {
         this.articlesRepository = articlesRepository;
         this.tagsRepository = tagsRepository;
     }
+    async parseCgiJsonFile(filePath) {
+        try {
+            if (!fs.existsSync(filePath)) {
+                throw new Error(`JSON file not found at: ${filePath}`);
+            }
+            const jsonRaw = fs.readFileSync(filePath, 'utf-8');
+            const jsonData = JSON.parse(jsonRaw);
+            await this.createDefaultTags();
+            for (const entry of jsonData) {
+                const articleNumber = this.extractArticleNumber(entry.numero_article);
+                const existingArticle = await this.articlesRepository.findOne({
+                    where: { articleNumber },
+                });
+                if (existingArticle) {
+                    continue;
+                }
+                const tagNames = this.detectTags(entry.content || '', entry.titre || '', '');
+                const tags = tagNames.length > 0 ? await this.findOrCreateTags(tagNames) : [];
+                const article = this.articlesRepository.create({
+                    articleNumber,
+                    title: entry.titre?.trim() || this.extractTitle(entry.numero_article),
+                    content: (entry.content || '').trim(),
+                    isActive: true,
+                    section: undefined,
+                    chapter: undefined,
+                    tags,
+                });
+                const references = (entry.references || []).map((ref) => ({
+                    id: undefined,
+                    referenceText: ref.texte,
+                    targetArticleNumber: undefined,
+                    referenceType: undefined,
+                    externalUrl: undefined,
+                    article,
+                    articleId: undefined,
+                }));
+                article.references = references;
+                await this.articlesRepository.save(article);
+            }
+            console.log(`Successfully parsed and saved ${jsonData.length} articles from JSON`);
+        }
+        catch (error) {
+            console.error('Error parsing CGI JSON file:', error);
+            throw error;
+        }
+    }
+    extractArticleNumber(numeroArticle) {
+        if (!numeroArticle) {
+            return '';
+        }
+        const match = numeroArticle.match(/Article\s+([0-9]+(?:\s*(?:bis|ter|quater|quinquies|sexies|septies|octies|nonies|decies))?)/i);
+        if (match) {
+            return match[1].trim();
+        }
+        return numeroArticle.trim();
+    }
     async parseCgiFile(filePath) {
         try {
             const content = fs.readFileSync(filePath, 'utf-8');
