@@ -1,0 +1,159 @@
+
+<div class="page-header">
+    <div class="container">
+        <h1>Liste des Articles</h1>
+        <p class="page-description">
+            Parcourez tous les articles du Code Général des Impôts marocain
+        </p>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="container">
+        <!-- Filtres et recherche -->
+        <div class="filters-section">
+            <form method="GET" class="filters-form">
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="query">Recherche</label>
+                        <input type="text" name="query" id="query" value="<%= filters.query %>" placeholder="Rechercher par numéro ou contenu...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="annee">Année</label>
+                        <select name="annee" id="annee">
+                            <option value="">Toutes les années</option>
+                            <% years.forEach(year => { %>
+                                <option value="<%= year %>" <%= filters.annee == year ? 'selected' : '' %>><%= year %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="sortBy">Trier par</label>
+                        <select name="sortBy" id="sortBy">
+                            <option value="id" <%= filters.sortBy === 'id' ? 'selected' : '' %>>Numéro d'article</option>
+                            <option value="titre" <%= filters.sortBy === 'titre' ? 'selected' : '' %>>Titre</option>
+                            <option value="annee" <%= filters.sortBy === 'annee' ? 'selected' : '' %>>Année</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="sortOrder">Ordre</label>
+                        <select name="sortOrder" id="sortOrder">
+                            <option value="asc" <%= filters.sortOrder === 'asc' ? 'selected' : '' %>>Croissant</option>
+                            <option value="desc" <%= filters.sortOrder === 'desc' ? 'selected' : '' %>>Décroissant</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button type="submit" class="btn btn-primary">Filtrer</button>
+                        <a href="/articles" class="btn btn-secondary">Réinitialiser</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Résultats -->
+        <div class="results-section">
+            <div class="results-header">
+                <div class="results-info">
+                    <h2>Résultats</h2>
+                    <p class="results-count">
+                        <%= pagination.total %> article<%= pagination.total > 1 ? 's' : '' %> trouvé<%= pagination.total > 1 ? 's' : '' %>
+                    </p>
+                </div>
+                <div class="results-actions">
+                    <span class="page-info">
+                        Page <%= pagination.currentPage %> sur <%= pagination.totalPages %>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Liste des articles -->
+            <div class="articles-list">
+                <% if (articles.length > 0) { %>
+                    <% articles.forEach(article => { %>
+                        <article class="article-item">
+                            <div class="article-main">
+                                <div class="article-header">
+                                    <span class="article-number"><%= article.numero_article %></span>
+                                    <span class="article-year"><%= article.annee %></span>
+                                </div>
+                                <h3 class="article-title">
+                                    <a href="/articles/<%= article.id %>"><%= article.titre %></a>
+                                </h3>
+                                <div class="article-content">
+                                    <%= article.content ? article.content.substring(0, 300) + '...' : 'Aucun contenu disponible' %>
+                                </div>
+                                <div class="article-meta">
+                                    <% if (article.references && article.references.length > 0) { %>
+                                        <span class="references-count">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                            </svg>
+                                            <%= article.references.length %> référence<%= article.references.length > 1 ? 's' : '' %>
+                                        </span>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="article-actions">
+                                <a href="/articles/<%= article.id %>" class="btn btn-primary">Lire</a>
+                                <a href="/articles/<%= article.id %>/pdf" class="btn btn-secondary">PDF</a>
+                            </div>
+                        </article>
+                    <% }); %>
+                <% } else { %>
+                    <div class="no-results">
+                        <div class="no-results-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </div>
+                        <h3>Aucun article trouvé</h3>
+                        <p>Essayez de modifier vos critères de recherche</p>
+                        <a href="/articles" class="btn btn-primary">Voir tous les articles</a>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Pagination -->
+            <% if (pagination.totalPages > 1) { %>
+                <div class="pagination">
+                    <% if (pagination.currentPage > 1) { %>
+                        <a href="?<%= new URLSearchParams({...filters, page: pagination.currentPage - 1}) %>" class="pagination-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15,18 9,12 15,6"></polyline>
+                            </svg>
+                            Précédent
+                        </a>
+                    <% } %>
+
+                    <div class="pagination-numbers">
+                        <% 
+                        const startPage = Math.max(1, pagination.currentPage - 2);
+                        const endPage = Math.min(pagination.totalPages, pagination.currentPage + 2);
+                        %>
+                        <% for (let i = startPage; i <= endPage; i++) { %>
+                            <a href="?<%= new URLSearchParams({...filters, page: i}) %>" 
+                               class="pagination-number <%= i === pagination.currentPage ? 'active' : '' %>">
+                                <%= i %>
+                            </a>
+                        <% } %>
+                    </div>
+
+                    <% if (pagination.currentPage < pagination.totalPages) { %>
+                        <a href="?<%= new URLSearchParams({...filters, page: pagination.currentPage + 1}) %>" class="pagination-btn">
+                            Suivant
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9,18 15,12 9,6"></polyline>
+                            </svg>
+                        </a>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>

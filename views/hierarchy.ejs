@@ -1,0 +1,223 @@
+
+<div class="hierarchy-page">
+    <div class="container">
+        <div class="page-header">
+            <h1>Structure du Code Général des Impôts</h1>
+            <p>Navigation hiérarchique par Livres, Titres, Chapitres et Sections</p>
+        </div>
+
+        <div class="hierarchy-content">
+            <!-- Livres -->
+            <section id="livres" class="hierarchy-section">
+                <h2>Livres</h2>
+                <% if (structure.livres && Object.keys(structure.livres).length > 0) { %>
+                    <div class="hierarchy-grid">
+                        <% Object.values(structure.livres).forEach(livre => { %>
+                            <div class="hierarchy-card">
+                                <div class="card-header">
+                                    <h3>Livre <%= livre.numero %></h3>
+                                    <span class="article-count"><%= livre.articles.length %> article<%= livre.articles.length > 1 ? 's' : '' %></span>
+                                </div>
+                                <div class="card-content">
+                                    <h4><%= livre.titre %></h4>
+                                    <div class="card-actions">
+                                        <button class="btn btn-sm btn-primary" onclick="toggleSection('livre-<%= livre.numero %>')">
+                                            Voir les articles
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-articles" id="livre-<%= livre.numero %>" style="display: none;">
+                                    <div class="articles-list">
+                                        <% livre.articles.slice(0, 10).forEach(article => { %>
+                                            <div class="article-item">
+                                                <a href="/articles/<%= article.id %>" class="article-link">
+                                                    <span class="article-number"><%= article.numero_article %></span>
+                                                    <span class="article-title"><%= article.titre %></span>
+                                                </a>
+                                            </div>
+                                        <% }); %>
+                                        <% if (livre.articles.length > 10) { %>
+                                            <div class="more-articles">
+                                                <a href="/articles?query=livre <%= livre.numero %>" class="btn btn-sm btn-outline">
+                                                    Voir tous les articles (<%= livre.articles.length - 10 %> de plus)
+                                                </a>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <div class="no-data">
+                        <p>Aucun livre trouvé dans la structure</p>
+                    </div>
+                <% } %>
+            </section>
+
+            <!-- Titres -->
+            <section id="titres" class="hierarchy-section">
+                <h2>Titres</h2>
+                <% if (structure.titres && Object.keys(structure.titres).length > 0) { %>
+                    <div class="hierarchy-grid">
+                        <% Object.values(structure.titres).forEach(titre => { %>
+                            <div class="hierarchy-card">
+                                <div class="card-header">
+                                    <h3>Titre <%= titre.numero %></h3>
+                                    <span class="article-count"><%= titre.articles.length %> article<%= titre.articles.length > 1 ? 's' : '' %></span>
+                                </div>
+                                <div class="card-content">
+                                    <h4><%= titre.titre %></h4>
+                                    <div class="card-actions">
+                                        <button class="btn btn-sm btn-primary" onclick="toggleSection('titre-<%= titre.numero %>')">
+                                            Voir les articles
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-articles" id="titre-<%= titre.numero %>" style="display: none;">
+                                    <div class="articles-list">
+                                        <% titre.articles.slice(0, 10).forEach(article => { %>
+                                            <div class="article-item">
+                                                <a href="/articles/<%= article.id %>" class="article-link">
+                                                    <span class="article-number"><%= article.numero_article %></span>
+                                                    <span class="article-title"><%= article.titre %></span>
+                                                </a>
+                                            </div>
+                                        <% }); %>
+                                        <% if (titre.articles.length > 10) { %>
+                                            <div class="more-articles">
+                                                <a href="/articles?query=titre <%= titre.numero %>" class="btn btn-sm btn-outline">
+                                                    Voir tous les articles (<%= titre.articles.length - 10 %> de plus)
+                                                </a>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <div class="no-data">
+                        <p>Aucun titre trouvé dans la structure</p>
+                    </div>
+                <% } %>
+            </section>
+
+            <!-- Chapitres -->
+            <section id="chapitres" class="hierarchy-section">
+                <h2>Chapitres</h2>
+                <% if (structure.chapitres && Object.keys(structure.chapitres).length > 0) { %>
+                    <div class="hierarchy-grid">
+                        <% Object.values(structure.chapitres).forEach(chapitre => { %>
+                            <div class="hierarchy-card">
+                                <div class="card-header">
+                                    <h3>Chapitre <%= chapitre.numero %></h3>
+                                    <span class="article-count"><%= chapitre.articles.length %> article<%= chapitre.articles.length > 1 ? 's' : '' %></span>
+                                </div>
+                                <div class="card-content">
+                                    <h4><%= chapitre.titre %></h4>
+                                    <div class="card-actions">
+                                        <button class="btn btn-sm btn-primary" onclick="toggleSection('chapitre-<%= chapitre.numero %>')">
+                                            Voir les articles
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-articles" id="chapitre-<%= chapitre.numero %>" style="display: none;">
+                                    <div class="articles-list">
+                                        <% chapitre.articles.slice(0, 10).forEach(article => { %>
+                                            <div class="article-item">
+                                                <a href="/articles/<%= article.id %>" class="article-link">
+                                                    <span class="article-number"><%= article.numero_article %></span>
+                                                    <span class="article-title"><%= article.titre %></span>
+                                                </a>
+                                            </div>
+                                        <% }); %>
+                                        <% if (chapitre.articles.length > 10) { %>
+                                            <div class="more-articles">
+                                                <a href="/articles?query=chapitre <%= chapitre.numero %>" class="btn btn-sm btn-outline">
+                                                    Voir tous les articles (<%= chapitre.articles.length - 10 %> de plus)
+                                                </a>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <div class="no-data">
+                        <p>Aucun chapitre trouvé dans la structure</p>
+                    </div>
+                <% } %>
+            </section>
+
+            <!-- Sections -->
+            <section id="sections" class="hierarchy-section">
+                <h2>Sections</h2>
+                <% if (structure.sections && Object.keys(structure.sections).length > 0) { %>
+                    <div class="hierarchy-grid">
+                        <% Object.values(structure.sections).forEach(section => { %>
+                            <div class="hierarchy-card">
+                                <div class="card-header">
+                                    <h3>Section <%= section.numero %></h3>
+                                    <span class="article-count"><%= section.articles.length %> article<%= section.articles.length > 1 ? 's' : '' %></span>
+                                </div>
+                                <div class="card-content">
+                                    <h4><%= section.titre %></h4>
+                                    <div class="card-actions">
+                                        <button class="btn btn-sm btn-primary" onclick="toggleSection('section-<%= section.numero %>')">
+                                            Voir les articles
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-articles" id="section-<%= section.numero %>" style="display: none;">
+                                    <div class="articles-list">
+                                        <% section.articles.slice(0, 10).forEach(article => { %>
+                                            <div class="article-item">
+                                                <a href="/articles/<%= article.id %>" class="article-link">
+                                                    <span class="article-number"><%= article.numero_article %></span>
+                                                    <span class="article-title"><%= article.titre %></span>
+                                                </a>
+                                            </div>
+                                        <% }); %>
+                                        <% if (section.articles.length > 10) { %>
+                                            <div class="more-articles">
+                                                <a href="/articles?query=section <%= section.numero %>" class="btn btn-sm btn-outline">
+                                                    Voir tous les articles (<%= section.articles.length - 10 %> de plus)
+                                                </a>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <div class="no-data">
+                        <p>Aucune section trouvée dans la structure</p>
+                    </div>
+                <% } %>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+}
+
+// Navigation fluide vers les sections
+document.addEventListener('DOMContentLoaded', function() {
+    const hash = window.location.hash;
+    if (hash) {
+        const element = document.querySelector(hash);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
+</script>

@@ -1,0 +1,6 @@
+<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+  <rect width="50" height="50" fill="#C1272D" rx="8"/>
+  <path d="M25 10 L35 20 L30 25 L25 20 L20 25 L15 20 Z" fill="#FFD700"/>
+  <circle cx="25" cy="30" r="8" fill="none" stroke="#FFD700" stroke-width="2"/>
+  <text x="25" y="35" text-anchor="middle" fill="#FFD700" font-family="Arial, sans-serif" font-size="8" font-weight="bold">MA</text>
+</svg>

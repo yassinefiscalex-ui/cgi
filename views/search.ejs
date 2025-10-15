@@ -1,0 +1,125 @@
+
+<div class="search-page">
+    <div class="container">
+        <div class="search-header">
+            <h1>Recherche Avancée</h1>
+            <p>Recherchez dans le Code Général des Impôts marocain avec des critères précis</p>
+        </div>
+
+        <div class="search-content">
+            <!-- Formulaire de recherche -->
+            <div class="search-form-section">
+                <form method="GET" action="/search" class="advanced-search-form">
+                    <div class="search-main">
+                        <div class="search-input-group">
+                            <label for="q">Mots-clés</label>
+                            <input type="text" name="q" id="q" placeholder="Tapez votre recherche..." value="<%= typeof query !== 'undefined' ? query : '' %>" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            Rechercher
+                        </button>
+                    </div>
+
+                    <div class="search-filters">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label for="annee">Année</label>
+                                <select name="annee" id="annee">
+                                    <option value="">Toutes les années</option>
+                                    <% years.forEach(year => { %>
+                                        <option value="<%= year %>" <%= typeof filters !== 'undefined' && filters.annee == year ? 'selected' : '' %>><%= year %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="sortBy">Trier par</label>
+                                <select name="sortBy" id="sortBy">
+                                    <option value="id" <%= typeof filters !== 'undefined' && filters.sortBy === 'id' ? 'selected' : '' %>>Numéro d'article</option>
+                                    <option value="titre" <%= typeof filters !== 'undefined' && filters.sortBy === 'titre' ? 'selected' : '' %>>Titre</option>
+                                    <option value="annee" <%= typeof filters !== 'undefined' && filters.sortBy === 'annee' ? 'selected' : '' %>>Année</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="sortOrder">Ordre</label>
+                                <select name="sortOrder" id="sortOrder">
+                                    <option value="asc" <%= typeof filters !== 'undefined' && filters.sortOrder === 'asc' ? 'selected' : '' %>>Croissant</option>
+                                    <option value="desc" <%= typeof filters !== 'undefined' && filters.sortOrder === 'desc' ? 'selected' : '' %>>Décroissant</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Suggestions de recherche -->
+            <div class="search-suggestions-section">
+                <h3>Suggestions de recherche</h3>
+                <div class="suggestion-tags">
+                    <a href="/search?q=impôt sur les sociétés" class="suggestion-tag">Impôt sur les sociétés</a>
+                    <a href="/search?q=TVA" class="suggestion-tag">TVA</a>
+                    <a href="/search?q=impôt sur le revenu" class="suggestion-tag">Impôt sur le revenu</a>
+                    <a href="/search?q=patente" class="suggestion-tag">Patente</a>
+                    <a href="/search?q=exonération" class="suggestion-tag">Exonération</a>
+                    <a href="/search?q=amortissement" class="suggestion-tag">Amortissement</a>
+                    <a href="/search?q=provision" class="suggestion-tag">Provision</a>
+                    <a href="/search?q=crédit d'impôt" class="suggestion-tag">Crédit d'impôt</a>
+                </div>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="search-stats">
+                <h3>Base de données</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number"><%= stats.totalArticles %></div>
+                        <div class="stat-label">Articles</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number"><%= stats.years ? stats.years.length : 0 %></div>
+                        <div class="stat-label">Années</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number"><%= stats.totalReferences %></div>
+                        <div class="stat-label">Références</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number"><%= stats.articlesWithReferences %></div>
+                        <div class="stat-label">Avec références</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('q');
+    const suggestionsContainer = document.getElementById('search-suggestions');
+    
+    if (searchInput) {
+        // Auto-focus
+        searchInput.focus();
+        
+        // Recherche en temps réel (optionnel)
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+            
+            if (query.length >= 2) {
+                searchTimeout = setTimeout(() => {
+                    // Ici on pourrait ajouter une recherche en temps réel
+                    // fetchSuggestions(query);
+                }, 300);
+            }
+        });
+    }
+});
+</script>
