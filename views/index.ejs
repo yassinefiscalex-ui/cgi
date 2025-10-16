@@ -1,162 +1,152 @@
-
+<!-- Hero Section -->
 <div class="hero-section">
-    <div class="hero-container">
-        <div class="hero-content">
-            <h1 class="hero-title">Code Général des Impôts</h1>
-            <p class="hero-subtitle">Royaume du Maroc - <%= currentYear %></p>
-            <p class="hero-description">
-                Consultez facilement les articles du Code Général des Impôts marocain. 
-                Recherchez, naviguez et exportez les textes législatifs fiscaux.
-            </p>
-            
-            <div class="hero-actions">
-                <a href="/search" class="btn btn-primary btn-large">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                    Rechercher un article
-                </a>
-                <a href="/articles" class="btn btn-secondary btn-large">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14,2 14,8 20,8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10,9 9,9 8,9"></polyline>
-                    </svg>
-                    Parcourir les articles
-                </a>
-            </div>
-        </div>
+    <div class="hero-content">
+        <h1 class="hero-title">Code Général des Impôts</h1>
+        <p class="hero-subtitle">Royaume du Maroc - <%= currentYear %></p>
+        <p class="hero-description">
+            Consultez facilement les articles du Code Général des Impôts marocain. 
+            Recherchez, naviguez et exportez les textes législatifs fiscaux.
+        </p>
         
-        <div class="hero-stats">
-            <div class="stat-card">
-                <div class="stat-number"><%= stats.totalArticles %></div>
-                <div class="stat-label">Articles</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number"><%= stats.years ? stats.years.length : 0 %></div>
-                <div class="stat-label">Années</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number"><%= stats.totalReferences %></div>
-                <div class="stat-label">Références</div>
-            </div>
+        <div class="hero-actions">
+            <a href="/search" class="btn btn-primary btn-lg">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                Rechercher un article
+            </a>
+            <a href="/articles" class="btn btn-secondary btn-lg">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Parcourir les articles
+            </a>
         </div>
     </div>
 </div>
 
-<div class="content-section">
-    <div class="container">
-        <!-- Recherche rapide -->
-        <section class="quick-search">
-            <h2>Recherche Rapide</h2>
-            <form action="/search" method="GET" class="search-form-large">
-                <div class="search-input-group">
-                    <input type="text" name="q" placeholder="Tapez votre recherche..." class="search-input-large" required>
-                    <button type="submit" class="search-btn-large">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        Rechercher
-                    </button>
-                </div>
-            </form>
-        </section>
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Stats Section -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
+        <div class="card text-center">
+            <div class="text-3xl font-bold text-blue-600 mb-2"><%= stats.totalArticles %></div>
+            <div class="text-sm text-gray-600 uppercase tracking-wider">Articles</div>
+        </div>
+        <div class="card text-center">
+            <div class="text-3xl font-bold text-blue-600 mb-2"><%= stats.years ? stats.years.length : 0 %></div>
+            <div class="text-sm text-gray-600 uppercase tracking-wider">Années</div>
+        </div>
+        <div class="card text-center">
+            <div class="text-3xl font-bold text-blue-600 mb-2"><%= stats.totalReferences %></div>
+            <div class="text-sm text-gray-600 uppercase tracking-wider">Références</div>
+        </div>
+        <div class="card text-center">
+            <div class="text-3xl font-bold text-blue-600 mb-2"><%= stats.articlesWithReferences %></div>
+            <div class="text-sm text-gray-600 uppercase tracking-wider">Avec références</div>
+        </div>
+    </div>
 
-        <!-- Articles récents -->
-        <section class="recent-articles">
-            <div class="section-header">
-                <h2>Articles Récents</h2>
-                <a href="/articles" class="view-all-link">Voir tous les articles</a>
+    <!-- Quick Search -->
+    <div class="card mb-16">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Recherche Rapide</h2>
+        <form action="/search" method="GET" class="search-form">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="text" name="q" placeholder="Tapez votre recherche..." 
+                       class="search-input" required>
+                <button type="submit" class="search-btn">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
             </div>
-            
-            <div class="articles-grid">
-                <% recentArticles.forEach(article => { %>
-                    <article class="article-card">
-                        <div class="article-header">
-                            <span class="article-number"><%= article.numero_article %></span>
-                            <span class="article-year"><%= article.annee %></span>
-                        </div>
-                        <h3 class="article-title">
-                            <a href="/articles/<%= article.id %>"><%= article.titre %></a>
-                        </h3>
-                        <div class="article-preview">
-                            <%= article.content ? article.content.substring(0, 200) + '...' : 'Aucun contenu disponible' %>
-                        </div>
-                        <div class="article-footer">
-                            <div class="article-meta">
-                                <% if (article.references && article.references.length > 0) { %>
-                                    <span class="references-count">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                        </svg>
-                                        <%= article.references.length %> référence<%= article.references.length > 1 ? 's' : '' %>
-                                    </span>
-                                <% } %>
-                            </div>
-                            <div class="article-actions">
-                                <a href="/articles/<%= article.id %>" class="btn btn-sm btn-primary">Lire</a>
-                                <a href="/articles/<%= article.id %>/pdf" class="btn btn-sm btn-secondary">PDF</a>
-                            </div>
-                        </div>
-                    </article>
-                <% }); %>
-            </div>
-        </section>
+        </form>
+    </div>
 
-        <!-- Navigation par structure -->
-        <section class="structure-navigation">
-            <h2>Navigation par Structure</h2>
-            <div class="structure-cards">
-                <div class="structure-card">
-                    <div class="structure-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14,2 14,8 20,8"></polyline>
-                        </svg>
+    <!-- Recent Articles -->
+    <div class="mb-16">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900">Articles Récents</h2>
+            <a href="/articles" class="text-blue-600 hover:text-blue-700 font-medium">Voir tous les articles →</a>
+        </div>
+        
+        <div class="articles-grid">
+            <% recentArticles.forEach(article => { %>
+                <article class="article-card">
+                    <div class="article-header">
+                        <span class="article-number"><%= article.numero_article %></span>
+                        <span class="article-year"><%= article.annee %></span>
                     </div>
-                    <h3>Livres</h3>
-                    <p>Organisation principale du code</p>
-                    <a href="/hierarchy#livres" class="btn btn-outline">Explorer</a>
-                </div>
-                
-                <div class="structure-card">
-                    <div class="structure-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                        </svg>
+                    <h3 class="article-title">
+                        <a href="/articles/<%= article.id %>"><%= article.titre %></a>
+                    </h3>
+                    <div class="article-preview">
+                        <%= article.content ? article.content.substring(0, 200) + '...' : 'Aucun contenu disponible' %>
                     </div>
-                    <h3>Titres</h3>
-                    <p>Divisions thématiques</p>
-                    <a href="/hierarchy#titres" class="btn btn-outline">Explorer</a>
-                </div>
-                
-                <div class="structure-card">
-                    <div class="structure-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            <polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
-                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                        </svg>
+                    <div class="article-footer">
+                        <div class="article-meta">
+                            <% if (article.references && article.references.length > 0) { %>
+                                <span class="references-count">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                    </svg>
+                                    <%= article.references.length %> référence<%= article.references.length > 1 ? 's' : '' %>
+                                </span>
+                            <% } %>
+                        </div>
+                        <div class="article-actions">
+                            <a href="/articles/<%= article.id %>" class="btn btn-sm btn-primary">Lire</a>
+                            <a href="/articles/<%= article.id %>/pdf" class="btn btn-sm btn-secondary">PDF</a>
+                        </div>
                     </div>
-                    <h3>Chapitres</h3>
-                    <p>Sous-divisions spécialisées</p>
-                    <a href="/hierarchy#chapitres" class="btn btn-outline">Explorer</a>
-                </div>
+                </article>
+            <% }); %>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="card text-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
             </div>
-        </section>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Recherche Avancée</h3>
+            <p class="text-gray-600">Recherchez par mots-clés, numéro d'article ou année avec des filtres précis</p>
+        </div>
+        
+        <div class="card text-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Export PDF</h3>
+            <p class="text-gray-600">Téléchargez les articles au format PDF avec un formatage professionnel</p>
+        </div>
+        
+        <div class="card text-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Interface Moderne</h3>
+            <p class="text-gray-600">Design responsive et intuitif pour une consultation optimale sur tous les appareils</p>
+        </div>
     </div>
 </div>
 
 <script>
     // Auto-focus sur la recherche
     document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.querySelector('.search-input-large');
+        const searchInput = document.querySelector('.search-input');
         if (searchInput) {
             searchInput.focus();
         }

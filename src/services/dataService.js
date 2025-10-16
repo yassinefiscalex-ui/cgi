@@ -24,75 +24,13 @@ class DataService {
   }
 
   buildHierarchicalStructure() {
-    if (!this.data) return;
-
+    // Structure simplifiée - pas de parsing complexe
     this.hierarchicalStructure = {
       livres: {},
       titres: {},
       chapitres: {},
       sections: {}
     };
-
-    this.data.forEach(article => {
-      // Extraire les informations hiérarchiques du contenu
-      const content = article.content || '';
-      
-      // Détecter les livres
-      const livreMatch = content.match(/LIVRE\s+([IVX]+)[\s\-]+(.+?)(?=\n|$)/i);
-      if (livreMatch) {
-        const livreKey = livreMatch[1];
-        if (!this.hierarchicalStructure.livres[livreKey]) {
-          this.hierarchicalStructure.livres[livreKey] = {
-            numero: livreKey,
-            titre: livreMatch[2].trim(),
-            articles: []
-          };
-        }
-        this.hierarchicalStructure.livres[livreKey].articles.push(article);
-      }
-
-      // Détecter les titres
-      const titreMatch = content.match(/TITRE\s+([IVX]+)[\s\-]+(.+?)(?=\n|$)/i);
-      if (titreMatch) {
-        const titreKey = titreMatch[1];
-        if (!this.hierarchicalStructure.titres[titreKey]) {
-          this.hierarchicalStructure.titres[titreKey] = {
-            numero: titreKey,
-            titre: titreMatch[2].trim(),
-            articles: []
-          };
-        }
-        this.hierarchicalStructure.titres[titreKey].articles.push(article);
-      }
-
-      // Détecter les chapitres
-      const chapitreMatch = content.match(/CHAPITRE\s+([IVX]+)[\s\-]+(.+?)(?=\n|$)/i);
-      if (chapitreMatch) {
-        const chapitreKey = chapitreMatch[1];
-        if (!this.hierarchicalStructure.chapitres[chapitreKey]) {
-          this.hierarchicalStructure.chapitres[chapitreKey] = {
-            numero: chapitreKey,
-            titre: chapitreMatch[2].trim(),
-            articles: []
-          };
-        }
-        this.hierarchicalStructure.chapitres[chapitreKey].articles.push(article);
-      }
-
-      // Détecter les sections
-      const sectionMatch = content.match(/SECTION\s+([IVX]+)[\s\-]+(.+?)(?=\n|$)/i);
-      if (sectionMatch) {
-        const sectionKey = sectionMatch[1];
-        if (!this.hierarchicalStructure.sections[sectionKey]) {
-          this.hierarchicalStructure.sections[sectionKey] = {
-            numero: sectionKey,
-            titre: sectionMatch[2].trim(),
-            articles: []
-          };
-        }
-        this.hierarchicalStructure.sections[sectionKey].articles.push(article);
-      }
-    });
   }
 
   async getAllArticles() {
@@ -182,11 +120,6 @@ class DataService {
     };
   }
 
-  async getHierarchicalStructure() {
-    await this.loadData();
-    return this.hierarchicalStructure;
-  }
-
   async getStatistics() {
     await this.loadData();
     
@@ -200,31 +133,6 @@ class DataService {
     };
 
     return stats;
-  }
-
-  async getRelatedArticles(articleId, limit = 5) {
-    await this.loadData();
-    
-    const article = await this.getArticleById(articleId);
-    if (!article) return [];
-
-    // Trouver des articles similaires basés sur les mots-clés du titre
-    const titleWords = (article.titre || '').toLowerCase().split(/\s+/).filter(word => word.length > 3);
-    
-    const related = this.data
-      .filter(a => a.id !== articleId)
-      .map(a => {
-        const score = titleWords.reduce((acc, word) => {
-          const content = (a.titre || '').toLowerCase();
-          return acc + (content.includes(word) ? 1 : 0);
-        }, 0);
-        return { ...a, score };
-      })
-      .filter(a => a.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, limit);
-
-    return related;
   }
 }
 

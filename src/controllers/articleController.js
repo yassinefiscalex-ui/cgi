@@ -8,7 +8,7 @@ class ArticleController {
       const stats = await dataService.getStatistics();
       const recentArticles = await dataService.searchArticles('', { 
         sortBy: 'id', 
-        sortOrder: 'desc', 
+        sortOrder: 'asc', 
         limit: 6 
       });
       
@@ -93,7 +93,7 @@ class ArticleController {
         });
       }
 
-      const relatedArticles = await dataService.getRelatedArticles(id, 5);
+      const relatedArticles = [];
       const stats = await dataService.getStatistics();
 
       res.render('articles/detail', {
@@ -112,25 +112,6 @@ class ArticleController {
     }
   }
 
-  // Structure hiérarchique
-  async getHierarchicalStructure(req, res) {
-    try {
-      const structure = await dataService.getHierarchicalStructure();
-      const stats = await dataService.getStatistics();
-
-      res.render('hierarchy', {
-        title: 'Structure du Code',
-        structure,
-        stats
-      });
-    } catch (error) {
-      console.error('Erreur structure hiérarchique:', error);
-      res.status(500).render('error', {
-        title: 'Erreur',
-        message: 'Erreur lors du chargement de la structure'
-      });
-    }
-  }
 
   // Export PDF d'un article
   async exportArticlePDF(req, res) {

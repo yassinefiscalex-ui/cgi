@@ -1,6 +1,6 @@
-
+<!-- Search Page -->
 <div class="search-page">
-    <div class="container">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="search-header">
             <h1>Recherche Avancée</h1>
             <p>Recherchez dans le Code Général des Impôts marocain avec des critères précis</p>
@@ -15,10 +15,9 @@
                             <label for="q">Mots-clés</label>
                             <input type="text" name="q" id="q" placeholder="Tapez votre recherche..." value="<%= typeof query !== 'undefined' ? query : '' %>" required>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-large">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.35-4.35"></path>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                             Rechercher
                         </button>
@@ -101,7 +100,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('q');
-    const suggestionsContainer = document.getElementById('search-suggestions');
     
     if (searchInput) {
         // Auto-focus
@@ -116,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (query.length >= 2) {
                 searchTimeout = setTimeout(() => {
                     // Ici on pourrait ajouter une recherche en temps réel
-                    // fetchSuggestions(query);
+                    console.log('Searching for:', query);
                 }, 300);
             }
         });

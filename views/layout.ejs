@@ -9,102 +9,101 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/legifrance-style.css">
-    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/cursor-style.css">
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Meta tags -->
     <meta name="description" content="Code Général des Impôts du Maroc - Consultation en ligne des articles fiscaux">
     <meta name="keywords" content="Code Général des Impôts, Maroc, fiscalité, impôts, loi de finances">
     <meta name="author" content="Ministère de l'Économie et des Finances">
 </head>
-<body>
+<body class="bg-gray-50 text-gray-900">
     <!-- Header -->
-    <header class="main-header">
-        <div class="header-container">
-            <div class="header-top">
-                <div class="logo-section">
-                    <img src="/images/logo-maroc.png" alt="Logo Maroc" class="logo">
-                    <div class="title-section">
-                        <h1>Code Général des Impôts</h1>
-                        <p class="subtitle">Royaume du Maroc</p>
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">CGI</span>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-semibold text-gray-900">Code Général des Impôts</h1>
+                        <p class="text-xs text-gray-500">Royaume du Maroc</p>
                     </div>
                 </div>
-                <div class="header-actions">
-                    <div class="search-box">
-                        <form action="/search" method="GET" class="search-form">
-                            <input type="text" name="q" placeholder="Rechercher un article..." class="search-input" id="global-search">
-                            <button type="submit" class="search-btn">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <path d="m21 21-4.35-4.35"></path>
-                                </svg>
-                            </button>
+
+                <!-- Search -->
+                <div class="flex-1 max-w-lg mx-8">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <form action="/search" method="GET">
+                            <input type="text" name="q" placeholder="Rechercher un article..." 
+                                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </form>
-                        <div class="search-suggestions" id="search-suggestions"></div>
                     </div>
                 </div>
+
+                <!-- Navigation -->
+                <nav class="flex space-x-8">
+                    <a href="/" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Accueil</a>
+                    <a href="/articles" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Articles</a>
+                    <a href="/search" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Recherche</a>
+                </nav>
             </div>
-            
-            <nav class="main-nav">
-                <ul class="nav-list">
-                    <li><a href="/" class="nav-link <%= typeof page !== 'undefined' && page === 'home' ? 'active' : '' %>">Accueil</a></li>
-                    <li><a href="/articles" class="nav-link <%= typeof page !== 'undefined' && page === 'articles' ? 'active' : '' %>">Articles</a></li>
-                    <li><a href="/hierarchy" class="nav-link <%= typeof page !== 'undefined' && page === 'hierarchy' ? 'active' : '' %>">Structure</a></li>
-                    <li><a href="/search" class="nav-link <%= typeof page !== 'undefined' && page === 'search' ? 'active' : '' %>">Recherche</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="main-content">
+    <main class="min-h-screen">
         <%- body %>
     </main>
 
     <!-- Footer -->
-    <footer class="main-footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Code Général des Impôts</h3>
-                    <p>Consultation en ligne des articles fiscaux du Royaume du Maroc</p>
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Code Général des Impôts</h3>
+                    <p class="text-sm text-gray-600">Consultation en ligne des articles fiscaux du Royaume du Maroc</p>
                 </div>
-                <div class="footer-section">
-                    <h3>Navigation</h3>
-                    <ul>
-                        <li><a href="/">Accueil</a></li>
-                        <li><a href="/articles">Liste des articles</a></li>
-                        <li><a href="/hierarchy">Structure du code</a></li>
-                        <li><a href="/search">Recherche avancée</a></li>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Navigation</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-sm text-gray-600 hover:text-blue-600">Accueil</a></li>
+                        <li><a href="/articles" class="text-sm text-gray-600 hover:text-blue-600">Liste des articles</a></li>
+                        <li><a href="/search" class="text-sm text-gray-600 hover:text-blue-600">Recherche avancée</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
-                    <h3>Informations</h3>
-                    <ul>
-                        <li><a href="#">À propos</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Mentions légales</a></li>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Informations</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-600 hover:text-blue-600">À propos</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 hover:text-blue-600">Contact</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 hover:text-blue-600">Mentions légales</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
-                    <h3>Statistiques</h3>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Statistiques</h3>
                     <% if (typeof stats !== 'undefined') { %>
-                        <p><%= stats.totalArticles %> articles</p>
-                        <p><%= stats.years ? stats.years.length : 0 %> années</p>
+                        <p class="text-sm text-gray-600"><%= stats.totalArticles %> articles</p>
+                        <p class="text-sm text-gray-600"><%= stats.years ? stats.years.length : 0 %> années</p>
                     <% } %>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; <%= new Date().getFullYear() %> Ministère de l'Économie et des Finances - Royaume du Maroc</p>
+            <div class="mt-8 pt-8 border-t border-gray-200">
+                <p class="text-center text-sm text-gray-500">&copy; <%= new Date().getFullYear() %> Ministère de l'Économie et des Finances - Royaume du Maroc</p>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
-    <script src="/js/search.js"></script>
 </body>
 </html>

@@ -90,48 +90,7 @@ class SearchController {
     }
   }
 
-  // API - Statistiques de recherche
-  async getSearchStats(req, res) {
-    try {
-      const stats = await dataService.getStatistics();
-      res.json(stats);
-    } catch (error) {
-      console.error('Erreur stats recherche:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    }
-  }
 
-  // API - Articles populaires/récents
-  async getPopularArticles(req, res) {
-    try {
-      const { limit = 10, type = 'recent' } = req.query;
-      
-      let sortBy = 'id';
-      let sortOrder = 'desc';
-      
-      if (type === 'popular') {
-        // Pour l'instant, on utilise les articles avec le plus de références
-        const allArticles = await dataService.getAllArticles();
-        const popular = allArticles
-          .filter(a => a.references && a.references.length > 0)
-          .sort((a, b) => (b.references?.length || 0) - (a.references?.length || 0))
-          .slice(0, parseInt(limit));
-        
-        return res.json(popular);
-      }
-
-      const results = await dataService.searchArticles('', { 
-        sortBy, 
-        sortOrder, 
-        limit: parseInt(limit) 
-      });
-      
-      res.json(results.articles);
-    } catch (error) {
-      console.error('Erreur articles populaires:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    }
-  }
 }
 
 module.exports = new SearchController();
