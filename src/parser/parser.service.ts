@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Article } from '../articles/entities/article.entity';
 import { Tag } from '../articles/entities/tag.entity';
+import { Reference } from '../articles/entities/reference.entity';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -14,6 +15,85 @@ export class ParserService {
     @InjectRepository(Tag)
     private tagsRepository: Repository<Tag>,
   ) {}
+
+  async parseCgiJsonFile(filePath: string): Promise<void> {
+    try {
+      if (!fs.existsSync(filePath)) {
+        throw new Error(`JSON file not found at: ${filePath}`);
+      }
+
+      const jsonRaw = fs.readFileSync(filePath, 'utf-8');
+      const jsonData: Array<{
+        id?: number;
+        numero_article: string;
+        titre: string;
+        annee?: number;
+        content: string;
+        references?: Array<{ numero?: number; annee_ref?: number; texte: string }>;
+      }> = JSON.parse(jsonRaw);
+
+      await this.createDefaultTags();
+
+      for (const entry of jsonData) {
+        const articleNumber = this.extractArticleNumber(entry.numero_article);
+
+        const existingArticle = await this.articlesRepository.findOne({
+          where: { articleNumber },
+        });
+
+        if (existingArticle) {
+          // Skip existing to avoid duplicates
+          continue;
+        }
+
+        const tagNames = this.detectTags(entry.content || '', entry.titre || '', '');
+        const tags = tagNames.length > 0 ? await this.findOrCreateTags(tagNames) : [];
+
+        // Create base article entity first
+        const article = this.articlesRepository.create({
+          articleNumber,
+          title: entry.titre?.trim() || this.extractTitle(entry.numero_article),
+          content: (entry.content || '').trim(),
+          isActive: true,
+          section: undefined,
+          chapter: undefined,
+          tags,
+        });
+
+        // Attach references linked to this article for cascade save
+        const references: Reference[] = (entry.references || []).map((ref) => ({
+          id: undefined as unknown as number,
+          referenceText: ref.texte,
+          targetArticleNumber: undefined,
+          referenceType: undefined,
+          externalUrl: undefined,
+          article,
+          articleId: undefined as unknown as number,
+        }));
+        article.references = references;
+
+        await this.articlesRepository.save(article);
+      }
+
+      console.log(`Successfully parsed and saved ${jsonData.length} articles from JSON`);
+    } catch (error) {
+      console.error('Error parsing CGI JSON file:', error);
+      throw error;
+    }
+  }
+
+  private extractArticleNumber(numeroArticle: string): string {
+    if (!numeroArticle) {
+      return '';
+    }
+    // Accept formats like "Article 2", "Article 2 bis", "Article 2 ter" etc.
+    const match = numeroArticle.match(/Article\s+([0-9]+(?:\s*(?:bis|ter|quater|quinquies|sexies|septies|octies|nonies|decies))?)/i);
+    if (match) {
+      return match[1].trim();
+    }
+    // Fallback: keep the original string
+    return numeroArticle.trim();
+  }
 
   async parseCgiFile(filePath: string): Promise<void> {
     try {

@@ -5,6 +5,8 @@ export declare class ParserService {
     private articlesRepository;
     private tagsRepository;
     constructor(articlesRepository: Repository<Article>, tagsRepository: Repository<Tag>);
+    parseCgiJsonFile(filePath: string): Promise<void>;
+    private extractArticleNumber;
     parseCgiFile(filePath: string): Promise<void>;
     private parseContent;
     private extractTitle;
